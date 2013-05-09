@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>  
+
+  <Resource name="jdbc/wsbdd" 
+            auth="Container" 
+            type="javax.sql.DataSource" 
+            maxActive="100" 
+            maxIdl="30" 
+            maxWait ="10000"
+            username="adminRf3g7If"
+            password="RPGjUx1GUsiX"
+            driverClassName="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://System.getenv(OPENSHIFT_MYSQL_DB_HOST):3306/wsbdd"/>
+            
+</Context>
