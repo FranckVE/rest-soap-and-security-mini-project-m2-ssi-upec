@@ -58,7 +58,7 @@ public class Engine {
 		return (RSAPublicKey)pubKey;
 	}
 
-	public boolean verifUser(String login, String mdp, String hash) throws Exception {
+	public boolean verifUser(String login, String mdp, byte[] sign) throws Exception {
 		RSAPublicKey pubKey = null;
 
 		// Premier test de login / mdp
@@ -67,11 +67,12 @@ public class Engine {
 		ResultSet resultat = state.executeQuery(query);
 		if(resultat.next()) {
 			pubKey = (RSAPublicKey) Engine.getPublicKeyBase64(resultat.getString("pubKey"));
-			return true;
+		} else {
+			return false;
 		}
 			
 		// Vérification du ID et de son hash
-//		if (CryptoUtils.verify(mdp, hash, pubKey)) return true;
+		if (CryptoUtils.verifySHA1(mdp.getBytes(), sign, pubKey)) return true;
 		return false;
 	}
 

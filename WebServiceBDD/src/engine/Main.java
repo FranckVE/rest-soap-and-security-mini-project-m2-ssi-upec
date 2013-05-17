@@ -69,11 +69,11 @@ public class Main extends HttpServlet {
 			byte[][] temp = engine.receiveLoginPassword(cipher, sessionKey);
 			String login = new String(temp[0]);
 			String mdp = new String(temp[1]);
-//			String hash = new String(temp[2]);
+			byte[] sign = temp[2];
 			
 			try {
 				// Vérification des credentials utilisateur
-				if(engine.verifUser(login, mdp, "")) return engine.sendOK(sessionKey);
+				if(engine.verifUser(login, mdp, sign)) return engine.sendOK(sessionKey);
 				else return engine.sendFalse(sessionKey);
 			} catch (Exception e) {
 				return "Erreur : "+e.getMessage();

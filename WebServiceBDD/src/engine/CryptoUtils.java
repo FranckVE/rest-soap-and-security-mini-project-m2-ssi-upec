@@ -262,7 +262,8 @@ public class CryptoUtils {
 
 	// Cette méthode prend en paramètres un challenge et sa signature et vérifie
 	// l'authenticité de cett dernière
-	public static boolean verify(String challenge, String signature, RSAPublicKey pubKey) throws Exception {
+	public static boolean verify(String challenge, String signature,
+			RSAPublicKey pubKey) throws Exception {
 
 		Signature myVerifySign;
 		myVerifySign = Signature.getInstance("MD5withRSA");
@@ -280,6 +281,29 @@ public class CryptoUtils {
 			System.out.println(" Successfully validated Signature ");
 			return true;
 		}
+	}
+
+	// Cette méthode prend en paramètres un challenge et sa signature et vérifie
+	// l'authenticité de cett dernière
+	public static boolean verifySHA1(byte[] challenge, byte[] signature, RSAPublicKey pubKey) throws Exception {
+
+		Signature myVerifySign;
+		myVerifySign = Signature.getInstance("SHA1withRSA");
+
+		myVerifySign.initVerify(pubKey);
+		myVerifySign.update(challenge);
+
+		boolean verifySign = myVerifySign.verify(signature);
+		if (verifySign == false) {
+			System.out.println(" Error in validating Signature ");
+			return false;
+		}
+
+		else {
+			System.out.println(" Successfully validated Signature ");
+			return true;
+		}
+
 	}
 
 	// Cette méthode prend en paramètres un challenge et sa signature et vérifie
@@ -377,37 +401,37 @@ public class CryptoUtils {
 		return raw;
 	}
 
-	public static byte[] adecRSA(byte[] cipherText, RSAPrivateKey privKey) throws Exception {
-		 Security.addProvider(new
-		 org.bouncycastle.jce.provider.BouncyCastleProvider());
+	public static byte[] adecRSA(byte[] cipherText, RSAPrivateKey privKey)
+			throws Exception {
+		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		// ici on recupère un tableau de bytes décodé en base64
 
 		byte[] plainText = null;
 
-			int length = cipherText.length;
-			plainText = new byte[length];
+		int length = cipherText.length;
+		plainText = new byte[length];
 
-			// initialisation
-			// Cipher cipher = Cipher.getInstance("RSA","BC");
-			Cipher cipher = Cipher.getInstance("RSA");
-			cipher.init(Cipher.DECRYPT_MODE, privKey);
+		// initialisation
+		// Cipher cipher = Cipher.getInstance("RSA","BC");
+		Cipher cipher = Cipher.getInstance("RSA");
+		cipher.init(Cipher.DECRYPT_MODE, privKey);
 
-			// déchiffrement
-			// for( int i=0;i<length;i++){
-			if (cipherText.length > cipher.getBlockSize())
-				plainText = decipherBigBlockSize(cipherText, privKey);
-			else
-				plainText = cipher.doFinal(cipherText);
-			// }
-			System.out.println("\nEND decryption RSA");
-			System.out.println("RSA decrypted Text : " + new String(plainText));
+		// déchiffrement
+		// for( int i=0;i<length;i++){
+		if (cipherText.length > cipher.getBlockSize())
+			plainText = decipherBigBlockSize(cipherText, privKey);
+		else
+			plainText = cipher.doFinal(cipherText);
+		// }
+		System.out.println("\nEND decryption RSA");
+		System.out.println("RSA decrypted Text : " + new String(plainText));
 
 		return plainText;
 	}
 
-	private static byte[] decipherBigBlockSize(byte[] raw, RSAPrivateKey privKey) throws Exception {
-		Security.addProvider(new
-				 org.bouncycastle.jce.provider.BouncyCastleProvider());
+	private static byte[] decipherBigBlockSize(byte[] raw, RSAPrivateKey privKey)
+			throws Exception {
+		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		ByteArrayOutputStream bout = null;
 
 		// Déchiffrement du fichier
@@ -470,19 +494,20 @@ public class CryptoUtils {
 	/********************* generateDESSecretKey ****************/
 
 	private static SecretKey generateAESSecretKey(int keySize) {
-        SecretKey key=null;
-    
-    try {
-            KeyGenerator keyGen1 = KeyGenerator.getInstance("AES");
-            keyGen1.init(keySize);
-            key = keyGen1.generateKey();
-            System.out.println("\nGeneration de clé AES (128 bits)");
-            return key;
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CryptoUtils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return key;
-    }
+		SecretKey key = null;
+
+		try {
+			KeyGenerator keyGen1 = KeyGenerator.getInstance("AES");
+			keyGen1.init(keySize);
+			key = keyGen1.generateKey();
+			System.out.println("\nGeneration de clé AES (128 bits)");
+			return key;
+		} catch (NoSuchAlgorithmException ex) {
+			Logger.getLogger(CryptoUtils.class.getName()).log(Level.SEVERE,
+					null, ex);
+		}
+		return key;
+	}
 
 	/******************** initAESKey() *****************/
 
