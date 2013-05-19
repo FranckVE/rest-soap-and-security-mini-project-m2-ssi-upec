@@ -117,9 +117,9 @@ public class Connection extends Applet {
 						String resp = CryptoUtils.receiveTextCipherSymetric(response, sessionKey);
 						
 						if(resp.contains("ACCEPT"))
-							getAppletContext().showDocument(new URL(getCodeBase()+"accueil.html"),"_top");
+							getAppletContext().showDocument(new URL("http://wsbanque-projetcdai.rhcloud.com/Bank/accueil.html"),"_top");
 						else
-							getAppletContext().showDocument(new URL(getCodeBase()+"index.html"),"_top");
+							getAppletContext().showDocument(new URL("http://wsbanque-projetcdai.rhcloud.com/Bank/index.html"),"_top");
 					} else {
 						JOptionPane.showMessageDialog(null, "Erreur sur le serveur distant ! Recommencez plus tard ...\n"+response, "Erreur", JOptionPane.ERROR_MESSAGE);
 					}
